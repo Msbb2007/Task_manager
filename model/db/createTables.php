@@ -50,6 +50,7 @@ class createTables{
             foreach ($tables as $query) {
                 $connect->exec($query);
             }
+            echo"جدول ها با موفقیت ساخنه شدند";
     
     }catch(PDOException $e) {
         die( $e->getMessage());
