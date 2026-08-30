@@ -1,5 +1,9 @@
 <?php
 
+namespace model\db;
+
+use PDO;
+use PDOException;
 class connector{
     private static $host = "127.0.0.1";
     private static $port = "3307"; 
