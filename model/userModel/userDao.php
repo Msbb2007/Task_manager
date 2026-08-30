@@ -40,4 +40,17 @@ class UserDao{
     
         return null; 
     }
+
+    public function getUserByUsername(string $username): ?users {
+        $sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$username]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return null;
+        }
+
+        return new users($result);
+    }
 }
