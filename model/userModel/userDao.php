@@ -7,9 +7,20 @@ use model\mainClasses\role;
 use model\mainClasses\users;
 
 class UserDao{
+    private \PDO $db;
+    public function __construct(Connector $connector) {
+        $this->db = $connector->getConnection();
+    }
 
-    public function createUser(users $users){
-        $conn = new connector();
-        $conn->getConnection();
+    public function createUser(users $user):bool{
+        $sql = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            $user->getUsername(),
+            $user->getPassword(),
+            $user->getEmail(),
+            $user->getRole()->value
+        ]);
     }
 }
