@@ -25,9 +25,9 @@ class UserDao{
     }
 
     public function login(string $username, string $password): ?users{
-        $sql="SELECT * FROM users WHERE username = ? AND password = ?";
+        $sql = "SELECT * FROM users WHERE username = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$username,$password]);
+        $stmt->execute([$username]);
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if(!$result){
