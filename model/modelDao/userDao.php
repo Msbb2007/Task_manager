@@ -62,11 +62,30 @@ class UserDao{
 
         return new users($result);
     }
-    public function getAllUsers(string $email){
-
-    }
-    public function updateUser(){}
-    public function deleteUser(string $username){
+    public function getAllUsers(): array {
+        $sql = "SELECT * FROM users";
+        $stmt = $this->db->query($sql);
         
+        $users = [];
+        while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $users[] = new users($result);
+        }
+        return $users;
+    }
+    public function updateUser(users $user): bool {
+        $sql = "UPDATE users SET password = ?, email = ?, role = ? WHERE username = ?";
+        $stmt = $this->db->prepare($sql);
+        
+        return $stmt->execute([
+            $user->getPassword(),
+            $user->getEmail(),
+            $user->getRole()->value,
+            $user->getUsername()
+        ]);
+    }
+    public function deleteUser(string $username): bool {
+        $sql = "DELETE FROM users WHERE username = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$username]);
     }
 }
