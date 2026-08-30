@@ -23,4 +23,21 @@ class UserDao{
             $user->getRole()->value
         ]);
     }
+
+    public function login(string $username, string $password): ?users{
+        $sql="SELECT * FROM users WHERE username = ? AND password = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$username,$password]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if(!$result){
+            return null;
+        }
+        
+        if (password_verify($password, $result['password'])) {
+            return new users($result);
+        }
+    
+        return null; 
+    }
 }
