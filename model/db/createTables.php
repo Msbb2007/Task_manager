@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/connection.php';
+use model\db\connector;
 class createTables{
     
     public function __construct(){
