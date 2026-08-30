@@ -1,6 +1,6 @@
 <?php
 
-namespace model\userModel;
+namespace model\modelDao;
 
 use model\db\connector;
 use model\mainClasses\role;
