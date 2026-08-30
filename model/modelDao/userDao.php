@@ -62,4 +62,11 @@ class UserDao{
 
         return new users($result);
     }
+    public function getAllUsers(string $email){
+
+    }
+    public function updateUser(){}
+    public function deleteUser(string $username){
+        
+    }
 }
