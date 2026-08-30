@@ -13,8 +13,17 @@ class UserDao{
     }
 
     public function createUser(users $user):bool{
-        $sql = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
-        $stmt = $this->db->prepare($sql);
+        $sql1 = "SELECT * FROM users WHERE username = ?";
+        $stmt = $this->db->prepare($sql1);
+        $stmt->execute([$user->getUsername()]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if($result){
+            return false;
+        }
+        
+        $sql2 = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql2);
 
         return $stmt->execute([
             $user->getUsername(),
