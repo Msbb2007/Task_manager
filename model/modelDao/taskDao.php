@@ -3,10 +3,11 @@
 namespace model\modelDao;
 
 use model\mainClasses\tasks;
+use model\db\connector;
 
 class taskDao{
     public function createTask(tasks $tasks){
-
+        
     }
     public function updateTask(tasks $tasks){
 
@@ -22,7 +23,7 @@ class taskDao{
 
     }
     public function getTasksByStatus(int $taskId){
-        
+
     }
 
 }
