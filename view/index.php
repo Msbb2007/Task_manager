@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+$errorMessage = $_SESSION['error_message'] ?? null;
+$successMessage = $_SESSION['success_message'] ?? null;
+
+unset($_SESSION['error_message']);
+unset($_SESSION['success_message']);
+?>
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -19,6 +29,22 @@
         <i class="fa-solid fa-tasks fa-3x text-primary"></i>
         <h3 class="mt-3">taskManager</h3>
     </div>
+
+    <!-- نمایش پیام خطا -->
+    <?php if ($errorMessage): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php echo htmlspecialchars($errorMessage); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- نمایش پیام موفقیت -->
+            <?php if ($successMessage): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?php echo htmlspecialchars($successMessage); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
 
     <ul class="nav nav-pills nav-justified mb-4" id="authTabs" role="tablist">
         <li class="nav-item" role="presentation">
