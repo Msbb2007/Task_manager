@@ -25,10 +25,10 @@ class AuthController {
             $_SESSION['username'] = $user->getUsername();
             $_SESSION['user_role'] = $user->getRole();
 
-            if ($user->getRole() === 'admin') {
-                header('Location: admin_dashboard.php');
+            if ($user->getRole()->value ==='admin') {
+                return 'admin';
             } else {
-                header('Location: member_dashboard.php');
+                return'member';
             }
             exit; 
         } else {
@@ -37,10 +37,6 @@ class AuthController {
     } 
     
     public function register(string $username, string $password, string $email):string {
-        if (empty($username) || empty($password) || empty($email)) {
-            header("Location: index.php?error=empty_fields");
-            exit();
-        }
         $this->user=new users();
 
         $this->user->setUsername($username);
@@ -48,13 +44,10 @@ class AuthController {
         $this->user->setEmail($email);
 
         $isRegistered = $this->userDao->createUser($this->user);
-
-    if ($isRegistered) {
-        header("Location: login.php?status=success");
-        exit();
-    } else {
-        header("Location: register.php?error=registration_failed");
-        exit();
-    }
+        if ($isRegistered) {
+            return $massage="ثبت نام انجام شد";
+        }else{
+            return $eror=" این نام کاربری قبلا ثبت شده است";
+        }
 }
 }
