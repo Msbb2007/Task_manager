@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../model/db/connector.php';
+require_once '../model/db/connection.php';
 require_once '../model/modelDao/UserDao.php';
 require_once '../controller/AuthController.php';
 
