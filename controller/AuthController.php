@@ -36,7 +36,7 @@ class AuthController {
         }
     } 
     
-    public function register(string $username, string $password, string $email):string {
+    public function register(string $username, string $email, string $password):string {
         $this->user=new users();
 
         $this->user->setUsername($username);
