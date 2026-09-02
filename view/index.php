@@ -77,7 +77,7 @@ unset($_SESSION['success_message']);
             <form action="process_auth.php" method="POST">
                 <input type="hidden" name="action" value="register">
                 <div class="mb-3">
-                    <label class="form-label">نام و نام خانوادگی</label>
+                    <label class="form-label">نام کاربری</label>
                     <input type="text" name="name" class="form-control" required>
                 </div>
                 <div class="mb-3">
