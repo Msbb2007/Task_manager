@@ -4,6 +4,7 @@ namespace controller\Authcontroller;
 
 use model\modelDao\UserDao;
 use model\mainClasses\users;
+use model\mainClasses\role;
 
 class AuthController {
     private $userDao;
@@ -42,6 +43,7 @@ class AuthController {
         $this->user->setUsername($username);
         $this->user->setPassword($password);
         $this->user->setEmail($email);
+        $this->user->setRole(role::Member);
 
         $isRegistered = $this->userDao->createUser($this->user);
         if ($isRegistered) {
