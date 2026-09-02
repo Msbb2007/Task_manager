@@ -22,13 +22,13 @@ class UserDao{
             return false;
         }
         
-        $sql2 = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
+        $sql2 = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql2);
 
         return $stmt->execute([
             $user->getUsername(),
-            $user->getPassword(),
             $user->getEmail(),
+            $user->getPassword(),
             $user->getRole()->value
         ]);
     }
@@ -43,7 +43,7 @@ class UserDao{
             return null;
         }
         
-        if (password_verify($password, $result['password'])) {
+        if ($password===$result['password']) {
             return new users($result);
         }
     
