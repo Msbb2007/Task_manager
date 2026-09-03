@@ -12,19 +12,32 @@ class taskDao{
     public function __construct(Connector $connector) {
         $this->db = $connector->getConnection();
     }
-    public function createTask(tasks $task): bool {
+    public function createTask(tasks $task): int {
+        $dueDate = $task->getDueDate();
+        if ($dueDate instanceof \DateTimeInterface) {
+            $dueDate = $dueDate->format('Y-m-d');
+        }
+    
         $sql = "INSERT INTO tasks (title, description, priority, status, due_date, category_id) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+        $success = $stmt->execute([
             $task->getTitle(),
             $task->getDescription(),
             $task->getPriority()->value,
             $task->getStatus()->value,
-            $task->getDueDate(),
-            $task->getCategoryId()
+            $dueDate,
+            $task->getCategoryId() ?: null
         ]);
+    
+        return $success ? (int)$this->db->lastInsertId() : 0;
     }
+    
     public function updateTask(tasks $task): bool {
+        $dueDate = $task->getDueDate();
+        if ($dueDate instanceof \DateTimeInterface) {
+            $dueDate = $dueDate->format('Y-m-d');
+        }
+    
         $sql = "UPDATE tasks SET title = ?, description = ?, priority = ?, status = ?, due_date = ?, category_id = ? WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
@@ -32,15 +45,26 @@ class taskDao{
             $task->getDescription(),
             $task->getPriority()->value,
             $task->getStatus()->value,
-            $task->getDueDate(),
-            $task->getCategoryId(),
+            $dueDate,
+            $task->getCategoryId() ?: null,
             $task->getId()
         ]);
     }
-    public function deleteTask(tasks $task): bool {
+    public function deleteTask(int $id): bool {
         $sql = "DELETE FROM tasks WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$task->getId()]);
+        return $stmt->execute([$id]);
+    }
+
+    public function getAllTasks(): array {
+        $sql = "SELECT * FROM tasks ORDER BY id DESC";
+        $stmt = $this->db->query($sql);
+        
+        $tasks = [];
+        while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $tasks[] = new tasks($result);
+        }
+        return $tasks;
     }
     public function getTaskById(int $id): ?tasks {
         $sql = "SELECT * FROM tasks WHERE id = ?";
