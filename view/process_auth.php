@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = $authController->login($username, $password);
 
         if ($error === 'admin') {
-            header('Location:adminView.php');
+            header('Location:./admin/dashbord.php');
             exit();
         }elseif($error === 'member'){
             header('Location:memberView.php');
@@ -66,4 +66,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: index.php');
     exit();
 }
-?>
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$action = $_GET['action'] ?? $_POST['action'] ?? '';
+
+if ($action === 'logout') {
+session_destroy();            
+header("Location: index.php"); 
+exit();
+}
