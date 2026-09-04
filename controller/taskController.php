@@ -204,6 +204,10 @@ class TaskController {
         return $this->taskDao->getTaskByUserId($userId);
     }
 
+    public function getTasksByUserIdMember(int $userId, ?string $search = null, ?string $status = null, ?string $priority = null): array {
+        return $this->taskDao->getTaskByUserIdMember($userId, $search, $status, $priority);
+    }
+
     private function deleteTask(int $taskId): void {
         if ($this->taskDao->deleteTask($taskId)) {
             header('Location: ../view/admin/dashbord.php?success=task_deleted');
