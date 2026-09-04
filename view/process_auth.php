@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location:./admin/dashbord.php');
             exit();
         }elseif($error === 'member'){
-            header('Location:memberView.php');
+            header('Location:./member/dashbord.php');
             exit();
         }
 
