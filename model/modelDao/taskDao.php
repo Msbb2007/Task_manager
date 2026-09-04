@@ -88,13 +88,33 @@ class taskDao{
         }
         return $tasks;
     }
-    public function getTasksByStatus(int $userId, status $status): array {
+    public function getTaskByUserIdMember(int $userId, ?string $search = null, ?string $status = null, ?string $priority = null): array {
         $sql = "SELECT t.* FROM tasks t
                 JOIN task_assignments ta ON t.id = ta.task_id
-                WHERE ta.user_id = ? AND t.status = ?";
+                WHERE ta.user_id = ?";
+        $params = [$userId];
+    
+        if (!empty($search)) {
+            $sql .= " AND (t.title LIKE ? OR t.description LIKE ?)";
+            $params[] = '%' . $search . '%';
+            $params[] = '%' . $search . '%';
+        }
+    
+        if (!empty($status)) {
+            $sql .= " AND t.status = ?";
+            $params[] = $status;
+        }
+    
+        if (!empty($priority)) {
+            $sql .= " AND t.priority = ?";
+            $params[] = $priority;
+        }
+    
+        $sql .= " ORDER BY t.id DESC";
+    
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$userId, $status->cases()]);
-        
+        $stmt->execute($params);
+    
         $tasks = [];
         while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $tasks[] = new tasks($result);
